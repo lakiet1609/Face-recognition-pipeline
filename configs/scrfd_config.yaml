@@ -1,5 +1,4 @@
 model_path: models/scrfd_500m_bnkps.onnx
-train_path: train
 device: cpu
 input_size: [640, 640]
 det_thresh: 0.5
