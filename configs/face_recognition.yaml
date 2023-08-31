@@ -1,0 +1,4 @@
+face_detection: configs/scrfd_config.yaml
+face_embedding: configs/arcface_config.yaml
+faiss: configs/faiss_config.yaml
+database: configs/database_config.yaml

@@ -1,0 +1,11 @@
+model_path: models/arcfaceresnet100-8.onnx
+device: cpu
+input_names: 
+- "data"
+input_size: [112,112]
+output_names: 
+- "fc1"
+output_shape: 512
+threshold: 0.5
+input_mean: 0.0
+input_std: 1.0
