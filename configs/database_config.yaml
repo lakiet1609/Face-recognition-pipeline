@@ -1,0 +1,8 @@
+hostname: "localhost"
+port: 27017
+user: face_rec
+password: face_rec
+database_name: face_database
+collection_name: person
+path: "./faces"
+end: ".jpg"
