@@ -2,7 +2,7 @@ hostname: "localhost"
 port: 27017
 user: face_rec
 password: face_rec
-database_name: face_database
-collection_name: person
+database_name: faces_database
+collection_name: people
 path: "./faces"
 end: ".jpg"
