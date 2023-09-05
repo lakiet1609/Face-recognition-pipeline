@@ -1,7 +1,5 @@
-from src.pipeline.face_recognition import FaceRecognition
-import cv2
+from src.pipeline.people_crud import PersonCRUD
 
-img = cv2.imread('test/ronaldo1.jpg') 
+person_crud = PersonCRUD().select_person_by_id(person_id='132dfqwe2')
+print(person_crud)
 
-detection = FaceRecognition().get_face_encode(img=img, largest_box=True)
-print(detection)
