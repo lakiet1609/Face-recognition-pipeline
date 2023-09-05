@@ -1,0 +1,6 @@
+#scrfd
+#arcface
+pymongo
+uvicorn
+faiss-gpu
+fastapi
