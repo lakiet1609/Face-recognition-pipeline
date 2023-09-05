@@ -1,4 +1,4 @@
-from src.models.face_recognition import FaceRecognition
+from src.pipeline.face_recognition import FaceRecognition
 import cv2
 
 img = cv2.imread('test/ronaldo1.jpg') 
