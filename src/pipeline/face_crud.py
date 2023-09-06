@@ -69,7 +69,7 @@ class FaceCRUD:
         if os.path.exists(image_path):
             os.remove(image_path)
     
-    def delete_all_face(self, person_id: str):
+    def delete_all_faces(self, person_id: str):
         if not self.db_instance.check_person_by_id(person_id):
             raise HTTPException(status.HTTP_404_NOT_FOUND)
         collection = self.db_instance.get_people_collection()
