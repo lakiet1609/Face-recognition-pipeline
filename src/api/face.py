@@ -23,7 +23,7 @@ async def insert_one_face(person_id: str, image: UploadFile = File(...)):
     result = face_crud.insert_face(person_id, img_decode)
     return result
 
-@router.delete('/{person_id}/faces', response_class= Response, status_code= status.HTTP_204_NO_CONTENT)
+@router.delete('/{person_id}/faces/{face_id}', response_class= Response, status_code= status.HTTP_204_NO_CONTENT)
 async def delete_one_face(person_id: str, face_id: str):
     face_crud.delete_face_by_ID(person_id, face_id)
 
