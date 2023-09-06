@@ -39,6 +39,27 @@ class FaceCRUD:
         
         return JSONResponse(status_code= status_result, content={'INFO': validate_result})
     
+    def select_all_face_of_person(self, person_id: str, skip: int, limit: int):
+        if not self.db_instance.check_person_by_id(person_id):
+            raise HTTPException(status.HTTP_404_NOT_FOUND)
+        collection = self.db_instance.get_people_collection()
+        person_doc = collection.find_one({'id': person_id}, {'faces.vector': 0})
+        if 'faces' not in person_doc.keys() or person_doc['faces'] is None:
+            return []
+        
+        faces = person_doc['faces']
+        if skip < 0:
+            skip = 0
+        elif skip > len(faces):
+            skip = len(faces) - 1
+        if limit < 0:
+            limit = 0
+        elif limit > len(faces):
+            limit = len(faces) - skip
+        
+        faces = faces[skip: skip + limit]
+        return faces
+
     def delete_face_by_ID(self, person_id: str, face_id: str):
         if not self.db_instance.check_person_by_id(person_id):
             raise HTTPException(status.HTTP_404_NOT_FOUND)
