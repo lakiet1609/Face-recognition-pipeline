@@ -5,6 +5,7 @@ class Configuration(object, metaclass=Singleton):
         self.config = 'configs/face_recognition.yaml'
         self.face_detection = None
         self.face_embedding = None
+        self.faiss = None
         self.database = None
         self.init_config()
     
@@ -12,6 +13,7 @@ class Configuration(object, metaclass=Singleton):
         config = read_yaml(self.config)
         self.face_detection = read_yaml(config['face_detection'])
         self.face_embedding = read_yaml(config['face_embedding'])
+        self.faiss = read_yaml(config['faiss'])
         self.database = read_yaml(config['database'])
     
     def get_face_detection(self):
@@ -22,3 +24,6 @@ class Configuration(object, metaclass=Singleton):
     
     def get_database(self):
         return self.database
+    
+    def get_faiss(self):
+        return self.faiss
