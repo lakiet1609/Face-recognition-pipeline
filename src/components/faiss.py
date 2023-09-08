@@ -77,7 +77,7 @@ class FAISS:
             for j, idx in enumerate(people_idx):
                 vector_id = vector_ids[idx]
                 person = self.local_db.people[vector_id]
-                person['score'] = scores[i][j]
+                person['score'] = float(scores[i][j])
                 person_info.append(person)
             
             person_ids = [x['person_id'] for x in person_info]
@@ -88,7 +88,8 @@ class FAISS:
             
         return recognize_results
     
-    def reset(self):
+    def reload(self):
+        self.local_db.initialize_local_database()
         if len(self.local_db.vectors.keys()) == 0 or len(self.local_db.people.keys()) == 0:
             self.is_trained = False
             return
@@ -104,7 +105,8 @@ class FAISS:
             faiss.write_index(cpu_index, self.model_path)
         else:
             faiss.write_index(self.index, self.model_path)
-            self.logger.info(f"Rewrite model to {self.model_path}.")
+        
+        self.logger.info(f"Rewrite model to {self.model_path}.")
 
 
 

@@ -26,6 +26,9 @@ class FaceRecognition(metaclass=Singleton):
     def get_face_embedding(self):
         return self.face_embedding
     
+    def get_reload(self):
+        return self.faiss.reload()
+    
     def get_face_encode(self, img: np.array, largest_box: False) -> np.array:
         detection = self.face_detection.detect(img)
         
@@ -63,21 +66,19 @@ class FaceRecognition(metaclass=Singleton):
         results = self.convert_result_to_dict(dets, kps, recognize)
         return results
     
-    def convert_result_to_dict(self, det, kps, recognize):
+    def convert_result_to_dict(self, detections, landmarks, recognitions):
         recognition_results = []
-        for i in range(len(det)):
+        for i in range(len(detections)):
             face = {}
-            bbox = list(det[i][:4])
-            det_score = det[i][4]
-            landmarks = []
-            for point in kps[i]:
-                landmarks.append(list(point))
-            
-            face['bbox'] = bbox
-            face['score'] = det_score
-            face['landmarks'] = landmarks
-            face['recognition'] = recognize[i]
+            bbox = detections[i][:4].tolist()
+            detection_score = float(detections[i][4])
+            landmark = []
+            for point in landmarks[i]:
+                landmark.append(point.tolist())
+            face["bbox"] = bbox
+            face["score"] = detection_score
+            face["landmark"] = landmark
+            face["recognition"] = recognitions[i]
             recognition_results.append(face)
         return recognition_results
-
     
