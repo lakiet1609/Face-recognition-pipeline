@@ -7,8 +7,8 @@ import os
 
 
 class FAISS:
-    def __init__(self):
-        self.config = Configuration.__call__().get_faiss()
+    def __init__(self, config):
+        self.config = config
         self.local_db = PersonDatabase.__call__()
         self.logger = Logger.__call__().get_logger()
 

@@ -3,6 +3,7 @@ from src.utils.common import Singleton
 from src.config.configuration import Configuration
 from src.components.arcface import ARCFACE
 from src.components.scrfd import SCRFD
+from src.components.faiss import FAISS
 from src.utils.face_det import Face
 import numpy as np
 
@@ -11,9 +12,11 @@ class FaceRecognition(metaclass=Singleton):
         self.config = Configuration.__call__()
         self.face_detection_config = self.config.get_face_detection()
         self.face_embedding_config = self.config.get_face_embedding()
+        self.faiss_config = self.config.get_faiss()
         
         self.face_detection = SCRFD(self.face_detection_config)
         self.face_embedding = ARCFACE(self.face_embedding_config)
+        self.faiss = FAISS(self.faiss_config)
 
         self.logger = Logger.__call__().get_logger()
     
@@ -53,4 +56,28 @@ class FaceRecognition(metaclass=Singleton):
         kps_corr = kps[np.where((bboxes==largest_box).all(axis=1))]
         detection_largest = (np.expand_dims(largest_box, axis=0), kps_corr)
         return detection_largest
+    
+    def get_recognize(self, image: np.array):
+        dets, kps, encodes = self.get_face_encode(image)
+        recognize = self.faiss.search(np.array(encodes))
+        results = self.convert_result_to_dict(dets, kps, recognize)
+        return results
+    
+    def convert_result_to_dict(self, det, kps, recognize):
+        recognition_results = []
+        for i in range(len(det)):
+            face = {}
+            bbox = list(det[i][:4])
+            det_score = det[i][4]
+            landmarks = []
+            for point in kps[i]:
+                landmarks.append(list(point))
+            
+            face['bbox'] = bbox
+            face['score'] = det_score
+            face['landmarks'] = landmarks
+            face['recognition'] = recognize[i]
+            recognition_results.append(face)
+        return recognition_results
+
     
