@@ -1,5 +1,4 @@
 from src.utils.logger import Logger
-from src.config.configuration import Configuration
 from src.database.person_database import PersonDatabase
 import faiss
 import numpy as np
@@ -16,7 +15,7 @@ class FAISS:
         self.device = self.config['device']
         self.model_path = self.config['model_path']
 
-        self.index = faiss.IndexFflatIP(self.dim)
+        self.index = faiss.IndexFlatIP(self.dim)
         self.is_trained = False
 
         self.initialize()
@@ -60,6 +59,7 @@ class FAISS:
             score_indices = []
             for j, dis in enumerate(D[i]):
                 if dis > 0.5:
+                    print('distance: ',dis)
                     score_indices.append(dis)
                     person_indices.append(I[i][j])
             
@@ -72,7 +72,7 @@ class FAISS:
             if len(people_idx) == 0:
                 recognize_results.append({'person_id': 'unrecognized'})
                 continue
-            
+
             person_info = []
             for j, idx in enumerate(people_idx):
                 vector_id = vector_ids[idx]
@@ -81,12 +81,12 @@ class FAISS:
                 person_info.append(person)
             
             person_ids = [x['person_id'] for x in person_info]
-            if len(set(person_ids) == 1):
+            if len(set(person_ids)) == 1:
                 recognize_results.append(person_info[0])
             else:
                 recognize_results.append({'person_id': 'unrecognized'})
             
-            return recognize_results
+        return recognize_results
     
     def reset(self):
         if len(self.local_db.vectors.keys()) == 0 or len(self.local_db.people.keys()) == 0:

@@ -26,6 +26,7 @@ class ARCFACE:
             exit(0)
         
         self.sess = ort.InferenceSession(self.model_path, providers = providers)
+        self.logger.info('Initialize ARCFACE Onnx successfully')
 
 
     def get(self, img, face):

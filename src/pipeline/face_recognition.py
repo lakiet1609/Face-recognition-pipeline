@@ -58,7 +58,7 @@ class FaceRecognition(metaclass=Singleton):
         return detection_largest
     
     def get_recognize(self, image: np.array):
-        dets, kps, encodes = self.get_face_encode(image)
+        dets, kps, encodes = self.get_face_encode(image, True)
         recognize = self.faiss.search(np.array(encodes))
         results = self.convert_result_to_dict(dets, kps, recognize)
         return results

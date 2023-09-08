@@ -1,8 +1,14 @@
-from src.pipeline.people_crud import PersonCRUD
-from pathlib import Path
+from src.pipeline.face_recognition import FaceRecognition
+import cv2
 
-person_crud = PersonCRUD().select_person_by_id(person_id='132dfqwe2')
-print(person_crud)
+face_recognition = FaceRecognition()
+
+img = cv2.imread('test/neymar.jpg')
+
+result = face_recognition.get_recognize(img)
+print(result)
+
+
 
 
 
