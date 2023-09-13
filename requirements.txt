@@ -1,5 +1,7 @@
 #scrfd
 #arcface
+onnxruntime
+numpy
 pymongo
 uvicorn
 faiss-gpu
