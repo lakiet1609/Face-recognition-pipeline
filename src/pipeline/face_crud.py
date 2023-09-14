@@ -10,9 +10,9 @@ import numpy as np
 
 class FaceCRUD:
     def __init__(self):
-        self.db_instance = PersonDatabase.__call__()
-        self.database_config = Configuration.__call__().get_database()
-        self.face_recognition = FaceRecognition.__call__()
+        self.db_instance = PersonDatabase()
+        self.database_config = Configuration().get_database()
+        self.face_recognition = FaceRecognition()
     
     def insert_face(self, person_id: str, image: np.ndarray):
         if not self.db_instance.check_person_by_id(person_id):

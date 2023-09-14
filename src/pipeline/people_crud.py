@@ -8,8 +8,8 @@ import os
 
 class PersonCRUD:
     def __init__(self):
-        self.database_config = Configuration.__call__().get_database()
-        self.db_instance = PersonDatabase.__call__()
+        self.database_config = Configuration().get_database()
+        self.db_instance = PersonDatabase()
     
     def insert_person(self, id, name):
         collection = self.db_instance.get_people_collection()

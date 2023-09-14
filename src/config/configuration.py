@@ -18,7 +18,7 @@ class Configuration(object, metaclass=Singleton):
         self.used_engine = face_detection_config['used_engine']
 
         if self.used_engine in face_detection_config.keys():
-            self.face_detection = read_yaml(config[self.used_engine])
+            self.face_detection = read_yaml(face_detection_config[self.used_engine])
         else:
             self.logger.error(f'Does not support this engine {self.used_engine}')
             exit()
@@ -40,3 +40,6 @@ class Configuration(object, metaclass=Singleton):
     
     def get_faiss(self):
         return self.faiss
+    
+    def get_engine(self):
+        return self.used_engine

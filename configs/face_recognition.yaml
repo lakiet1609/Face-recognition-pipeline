@@ -1,7 +1,7 @@
 face_detection:
   used_engine: scrfd_onnx
-  scrfd_onnx: models/arcfaceresnet100-8.onnx
-  srcfd_trt: models/scrfd_500m_bnkps.engine
+  scrfd_onnx: configs/scrfd_config.yaml
+  srcfd_trt: configs/scrfd_trt_cfg.yaml
 face_embedding: configs/arcface_config.yaml
 faiss: configs/faiss_config.yaml
 database: configs/database_config.yaml

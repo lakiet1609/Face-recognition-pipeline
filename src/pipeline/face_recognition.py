@@ -1,6 +1,7 @@
 from src.utils.logger import Logger
 from src.utils.common import Singleton
 from src.config.configuration import Configuration
+from src.manger.detection_manager import DetectionManager
 from src.components.arcface import ARCFACE
 from src.components.scrfd import SCRFD
 from src.components.faiss import FAISS
@@ -9,12 +10,14 @@ import numpy as np
 
 class FaceRecognition(metaclass=Singleton):
     def __init__(self):
-        self.config = Configuration.__call__()
+        self.config = Configuration()
         self.face_detection_config = self.config.get_face_detection()
+        self.engine = self.config.get_engine()
         self.face_embedding_config = self.config.get_face_embedding()
         self.faiss_config = self.config.get_faiss()
         
-        self.face_detection = SCRFD(self.face_detection_config)
+        self.detection_manager = DetectionManager(self.face_detection_config, self.engine)
+        self.face_detection = self.detection_manager.get_engine()
         self.face_embedding = ARCFACE(self.face_embedding_config)
         self.faiss = FAISS(self.faiss_config)
 
