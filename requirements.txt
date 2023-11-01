@@ -1,5 +1,5 @@
-#scrfd
-#arcface
+scrfd
+arcface
 onnxruntime
 numpy
 pymongo
