@@ -43,9 +43,6 @@ class SCRFD:
         blob = cv2.dnn.blobFromImage(img, 1.0/self.input_std, input_size, (self.input_mean, self.input_mean, self.input_mean), swapRB=True)
         net_outs = self.sess.run(self.output_names, {self.input_names[0] : blob})
 
-        for i, item in enumerate(net_outs):
-            print(i, item, type(item))
-
         input_height = blob.shape[2]
         input_width = blob.shape[3]
         fmc = self.fmc

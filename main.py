@@ -1,8 +1,25 @@
-from src.pipeline.face_recognition import FaceRecognition
-from src.manger.detection_manager import DetectionManager
+from src.components.arcface import ARCFACE
+from src.components.scrfd import SCRFD
 from src.config.configuration import Configuration
-from src.utils.common import read_yaml
+from src.utils.face_det import Face
 import cv2
 
-img = cv2.imread('faces/CR7/bd10d9ec07894146bc8884bc161de5c8.jpg')
+
+scrfd_config = Configuration().get_face_detection()
+scrfd_process = SCRFD(scrfd_config)
+
+arcface_config = Configuration().get_face_embedding()
+arcface_process = ARCFACE(arcface_config)
+
+image = cv2.imread('test/neymar.jpg')
+
+predicted= scrfd_process.detect(img=image, input_size=[640, 640])
+
+bounding_box = predicted[0].tolist()[0]
+keypoints = predicted[1][0]
+
+face = Face(bbox= bounding_box[:4], kps= keypoints, det_score = bounding_box[4])
+vector = arcface_process.get(image, face)
+print(f'Face embeddings shape: {vector.shape}')
+
 
