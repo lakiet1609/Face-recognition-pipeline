@@ -47,47 +47,48 @@ class FAISS:
         faiss.write_index(self.index, self.model_path)
         self.logger.info(f'Write model to {self.model_path}')
     
-    def search(self, embedding_vectors: np.ndarray, nearest_neighbors: int= 5):
+    def search(self, embedding_vectors: np.ndarray, nearest_neighgbors: int = 1):
+        # check if model is trained completely before searching
         if not (self.is_trained or self.index.is_trained):
             return {}
-        
-        D, I = self.index.search(embedding_vectors, nearest_neighbors)
+        # search nearest embedding vectors
+        D, I = self.index.search(embedding_vectors, nearest_neighgbors) 
         people = []
         scores = []
-        for i in range(len(D)):
-            person_indices = []
-            score_indices = []
+        # select embedding vectors with cosin > threshold
+        for i in range (len(D)):
+            person_indexes = []
+            scores_indexes = []
             for j, dis in enumerate(D[i]):
                 if dis > 0.5:
-                    print('distance: ',dis)
-                    score_indices.append(dis)
-                    person_indices.append(I[i][j])
-            
-            people.append(person_indices)
-            scores.append(score_indices)
+                    scores_indexes.append(float(dis))
+                    person_indexes.append(I[i][j])
+            people.append(person_indexes)
+            scores.append(scores_indexes)
         
         vector_ids = list(self.local_db.vectors.keys())
         recognize_results = []
-        for i, people_idx in enumerate(people):
-            if len(people_idx) == 0:
-                recognize_results.append({'person_id': 'unrecognized'})
+        
+        for i, person_indexes in enumerate(people):
+            if len(person_indexes) == 0: 
+                recognize_results.append({"person_id": "unrecognize"})   
                 continue
-
-            person_info = []
-            for j, idx in enumerate(people_idx):
-                vector_id = vector_ids[idx]
+            person_infos = []
+            for j,index in enumerate(person_indexes):
+                print()
+                vector_id = vector_ids[index]
                 person = self.local_db.people[vector_id]
-                person['score'] = float(scores[i][j])
-                person_info.append(person)
-            
-            person_ids = [x['person_id'] for x in person_info]
+                person ["score"] = scores[i][j]
+                person_infos.append(person)
+            # check if all results are only one person's
+            person_ids = [x["person_id"] for x in person_infos]
             if len(set(person_ids)) == 1:
-                recognize_results.append(person_info[0])
+                recognize_results.append(person_infos[0])
             else:
-                recognize_results.append({'person_id': 'unrecognized'})
-            
+                recognize_results.append({"person_id": "unrecognize"}) 
+
         return recognize_results
-    
+        
     def reload(self):
         self.local_db.initialize_local_database()
         if len(self.local_db.vectors.keys()) == 0 or len(self.local_db.people.keys()) == 0:

@@ -6,7 +6,7 @@ from src.pipeline.face_recognition import FaceRecognition
 
 face_recognition = FaceRecognition()
 
-router = APIRouter(prefix='/recognition', tags=['people'])
+router = APIRouter(prefix='/recognition', tags=['prediction'])
 
 @router.post("",status_code=status.HTTP_200_OK)
 async def recognize(image: UploadFile = File(...)):

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Response, status
 from urllib.parse import unquote
-from src.pipeline.people_crud import PersonCRUD
+from src.database.people_crud import PersonCRUD
 
 person_crud = PersonCRUD()
 

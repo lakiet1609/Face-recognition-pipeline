@@ -6,6 +6,3 @@ import cv2
 
 img = cv2.imread('faces/CR7/bd10d9ec07894146bc8884bc161de5c8.jpg')
 
-face_recognition = FaceRecognition()
-ret = face_recognition.get_recognize(img)
-print(ret)
